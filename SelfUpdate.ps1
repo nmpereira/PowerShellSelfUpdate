@@ -1,5 +1,5 @@
 Write-host $PSScriptRoot
-Write-Output "v29"
+Write-Output "v30"
 
 $DestinationPath = Get-Location
 write-host $DestinationPath
