@@ -1,5 +1,5 @@
 Write-host $PSScriptRoot
-Echo "v4"
+Echo "v5"
 
 function DownloadFilesFromRepo {
 #Param(
@@ -45,6 +45,7 @@ function DownloadFilesFromRepo {
 }
 
 (DownloadFilesFromRepo)
+start-sleep 5
 taskkill /IM Test1.EXE /F
 & "$PSScriptRoot\ps2execonvert.ps1"
 #invoke-ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
