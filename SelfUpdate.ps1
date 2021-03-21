@@ -1,3 +1,6 @@
+Write-host $PSScriptRoot
+#v1
+
 function DownloadFilesFromRepo {
 #Param(
     $Owner= 'nmpereira'
