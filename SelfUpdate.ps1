@@ -1,5 +1,5 @@
 Write-host $PSScriptRoot
-Echo "v3"
+Echo "v4"
 
 function DownloadFilesFromRepo {
 #Param(
