@@ -1,5 +1,5 @@
 Write-host $PSScriptRoot
-Echo "v14"
+Echo "v15"
 
 function DownloadFilesFromRepo {
 #Param(
@@ -72,7 +72,7 @@ start-sleep 3
 ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
 '@
 
-$scriptwrite | Set-Content ./ps2execonvert.ps1 
+$scriptwrite | Set-Content $ps2execonvert 
 
 ############
 
