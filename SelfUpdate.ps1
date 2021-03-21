@@ -8,7 +8,7 @@ function DownloadFilesFromRepo {
     $Path= 'Test1.ps1'
     $DestinationPath= 'C:\Gitpersonal\testcode'
     $script:scriptpath = join-path $DestinationPath -childpath $Path
-    $script:DestinationPathexe = join-path $DestinationPath -childpath '.exe'
+    $script:DestinationPathexe = join-path $DestinationPath -childpath 'Test1.exe'
     #)
 
     $baseUri = "https://api.github.com/"
