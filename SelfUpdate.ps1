@@ -7,6 +7,8 @@ function DownloadFilesFromRepo {
     $Repository='PowerShellTest'
     $Path= 'Test1.ps1'
     $DestinationPath= 'C:\Gitpersonal\testcode'
+    $script:scriptpath = join-path $DestinationPath -childpath $Path
+    $script:DestinationPathexe = join-path $DestinationPath -childpath '.exe'
     #)
 
     $baseUri = "https://api.github.com/"
@@ -43,4 +45,6 @@ function DownloadFilesFromRepo {
 }
 
 (DownloadFilesFromRepo)
+invoke-ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
+
 pause
