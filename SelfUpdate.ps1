@@ -1,6 +1,8 @@
 Write-host $PSScriptRoot
-Write-Output "v30"
 
+$version= "31"
+
+Write-Output $version
 $DestinationPath = Get-Location
 write-host $DestinationPath
 
@@ -17,6 +19,9 @@ $varfile = join-path -path $Tempfolder -childpath 'variable.txt'
 $DestinationPath | Set-Content $varfile
 $ps2execonvertpath = join-path $Tempfolder -childpath $ps2execonvert
 
+
+$versionlog= $varfile = join-path -path $Tempfolder -childpath 'version.txt'
+$version | Set-Content $versionlog
 function DownloadFilesFromRepo {
 #Param(
 
@@ -95,9 +100,9 @@ pause
 $scriptwrite | Set-Content $ps2execonvertpath 
 
 ############
-start-sleep 3
+
 (DownloadFilesFromRepo)
-start-sleep 3
+
 #taskkill /IM Test1.EXE /F
 #& "$UpdaterPath\ps2execonvert.ps1"
 try {
