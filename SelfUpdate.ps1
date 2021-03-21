@@ -8,7 +8,9 @@ function DownloadFilesFromRepo {
     $Path= 'test1.ps1'
     $DestinationPath= 'C:\Gitpersonal\testcode'
     $script:scriptpath = join-path $DestinationPath -childpath $Path
-    $script:DestinationPathexe = join-path $DestinationPath -childpath 'Test1.exe'
+    $script:DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
+    $script:ps2execonvert= 'ps2execonvert.ps1'
+	$script:ps2execonvertpath = join-path $DestinationPath -childpath $ps2execonvert
     #)
 
     $baseUri = "https://api.github.com/"
@@ -59,7 +61,8 @@ function DownloadFilesFromRepo {
 (DownloadFilesFromRepo)
 start-sleep 5
 #taskkill /IM Test1.EXE /F
-& "$DestinationPath\ps2execonvert.ps1"
+#& "$DestinationPath\ps2execonvert.ps1"
+ Invoke-Item (start powershell $ps2execonvertpath)
 #invoke-ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
 #Start-Process -FilePath "Test1.exe"
 
