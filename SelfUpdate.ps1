@@ -1,5 +1,5 @@
 Write-host $PSScriptRoot
-Write-Output "v23"
+Write-Output "v25"
 
 $DestinationPath = Get-Location
 write-host $DestinationPath
@@ -10,7 +10,7 @@ $Repository='PowerShellTest'
 $Filename= 'test1.ps1'
 
 #$script:scriptpath = join-path $DestinationPath -childpath $Filename
-$DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
+#$DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
 $ps2execonvert= 'ps2execonvert.ps1'
 $Tempfolder ='C:\temp\test'
 $varfile = join-path -path $Tempfolder -childpath 'variable.txt'
@@ -26,7 +26,7 @@ function DownloadFilesFromRepo {
     $args = "repos/$RepoOwner/$Repository/contents/$Filename"
 
     try {
-        #$wr = Invoke-WebRequest -Uri $($baseuri+$args) -ErrorAction Stop
+        $wr = Invoke-WebRequest -Uri $($baseuri+$args) -ErrorAction Stop
     }
     catch {
         write-host "cannot access webrequest"
@@ -95,8 +95,9 @@ pause
 $scriptwrite | Set-Content $ps2execonvertpath 
 
 ############
-
+start-sleep 3
 (DownloadFilesFromRepo)
+start-sleep 3
 #taskkill /IM Test1.EXE /F
 #& "$UpdaterPath\ps2execonvert.ps1"
 try {
