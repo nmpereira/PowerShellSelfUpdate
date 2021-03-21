@@ -72,7 +72,7 @@ start-sleep 3
 ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
 '@
 
-$scriptwrite | Set-Content ./convertertest.ps1 
+$scriptwrite | Set-Content ./ps2execonvert.ps1 
 
 ############
 
