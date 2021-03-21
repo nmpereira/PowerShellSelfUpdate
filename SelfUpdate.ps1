@@ -1,29 +1,34 @@
 Write-host $PSScriptRoot
-Echo "v15"
-
+Echo "v19"
+$location = Get-Location
+write-host ###########
+write-host $location
+write-host ##########
+start-sleep 3
+$Owner= 'nmpereira'
+$Repository='PowerShellTest'
+$Path= 'test1.ps1'
+$DestinationPath= 'C:\Gitpersonal\testcode'
+$script:scriptpath = join-path $DestinationPath -childpath $Path
+$script:DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
+$script:ps2execonvert= 'ps2execonvert.ps1'
+$script:ps2execonvertpath = join-path $DestinationPath -childpath $ps2execonvert
 function DownloadFilesFromRepo {
 #Param(
-    $Owner= 'nmpereira'
-    $Repository='PowerShellTest'
-    $Path= 'test1.ps1'
-    $DestinationPath= 'C:\Gitpersonal\testcode'
-    $script:scriptpath = join-path $DestinationPath -childpath $Path
-    $script:DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
-    $script:ps2execonvert= 'ps2execonvert.ps1'
-	$script:ps2execonvertpath = join-path $DestinationPath -childpath $ps2execonvert
+
     #)
 
     $baseUri = "https://api.github.com/"
     $args = "repos/$Owner/$Repository/contents/$Path"
 
     try {
-        $wr = Invoke-WebRequest -Uri $($baseuri+$args) -ErrorAction Stop
+        #$wr = Invoke-WebRequest -Uri $($baseuri+$args) -ErrorAction Stop
     }
     catch {
         write-host "cannot access webrequest"
     }
     try {
-        $objects = $wr.Content | ConvertFrom-Json
+        $objects = $wr.Content | ConvertFrom-Json -ErrorAction Stop
     }
     catch {
         write-host "cannot convert to Json"
@@ -60,7 +65,7 @@ function DownloadFilesFromRepo {
 
 ##################
 $scriptwrite = @'
-
+install-module ps2exe -force
     $Path= 'test1.ps1'
     $DestinationPath= 'C:\Gitpersonal\testcode'
     $script:scriptpath = join-path $DestinationPath -childpath $Path
@@ -72,7 +77,7 @@ start-sleep 3
 ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
 '@
 
-$scriptwrite | Set-Content $ps2execonvert 
+$scriptwrite | Set-Content $ps2execonvertpath 
 
 ############
 
@@ -80,7 +85,14 @@ $scriptwrite | Set-Content $ps2execonvert
 start-sleep 5
 #taskkill /IM Test1.EXE /F
 #& "$DestinationPath\ps2execonvert.ps1"
- Invoke-Item (start powershell $ps2execonvertpath)
+try {
+    Invoke-Item (start powershell $ps2execonvertpath -verb runas)
+}
+catch {
+    
+} 
+
+
 #invoke-ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
 #Start-Process -FilePath "Test1.exe"
 
