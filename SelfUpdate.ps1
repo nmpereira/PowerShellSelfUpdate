@@ -1,5 +1,5 @@
 Write-host $PSScriptRoot
-Echo "v19"
+Echo "v20"
 $location = Get-Location
 write-host ###########
 write-host $location
