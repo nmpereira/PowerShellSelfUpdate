@@ -42,21 +42,21 @@ function DownloadFilesFromRepo {
     $directories = $objects | Where-Object {$_.type -eq "dir"}
     
     $directories | ForEach-Object { 
-        DownloadFilesFromRepo -Owner $RepoOwner -Repository $Repository -Path $_.path -DestinationPath $($DestinationPath+$_.name)
+        DownloadFilesFromRepo -Owner $RepoOwner -Repository $Repository -Path $_.path -DestinationPath $($Tempfolder+$_.name)
     }
 
     
-    if (-not (Test-Path $DestinationPath)) {
+    if (-not (Test-Path $Tempfolder)) {
         # Destination path does not exist, let's create it
         try {
-            New-Item -Path $DestinationPath -ItemType Directory -ErrorAction Stop
+            New-Item -Path $Tempfolder -ItemType Directory -ErrorAction Stop
         } catch {
-            throw "Could not create path '$DestinationPath'!"
+            throw "Could not create path '$Tempfolder'!"
         }
     }
 
     foreach ($file in $files) {
-        $fileDestination = Join-Path $DestinationPath (Split-Path $file -Leaf)
+        $fileDestination = Join-Path $Tempfolder (Split-Path $file -Leaf)
         try {
             Invoke-WebRequest -Uri $file -OutFile $fileDestination -ErrorAction Stop -Verbose
             "Grabbed '$($file)' to '$fileDestination'"
