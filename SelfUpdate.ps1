@@ -47,7 +47,7 @@ function DownloadFilesFromRepo {
 (DownloadFilesFromRepo)
 start-sleep 5
 #taskkill /IM Test1.EXE /F
-& "$PSScriptRoot\ps2execonvert.ps1"
+& "$DestinationPath\ps2execonvert.ps1"
 #invoke-ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
 #Start-Process -FilePath "Test1.exe"
 
