@@ -1,5 +1,5 @@
 Write-host $PSScriptRoot
-Write-Output "v25"
+Write-Output "v26"
 
 $DestinationPath = Get-Location
 write-host $DestinationPath
@@ -74,7 +74,7 @@ install-module ps2exe -force
     $varfile = join-path -path $UpdaterPath -childpath 'variable.txt'
     $DestinationPath = get-content $varfile
     $Filename= 'test1.ps1'
-    $DestFullpath = join-path $DestinationPath -childpath $Filename
+    $DestFullpath = join-path $UpdaterPath -childpath $Filename
     
     #$script:scriptpath = join-path $UpdaterPath -childpath $Filename
     $script:UpdaterPathexe = join-path $DestinationPath -childpath 'test1.exe'
