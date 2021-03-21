@@ -1,5 +1,5 @@
 Write-host $PSScriptRoot
-Echo "v12"
+Echo "v13"
 
 function DownloadFilesFromRepo {
 #Param(
@@ -57,6 +57,24 @@ function DownloadFilesFromRepo {
     }
 
 }
+
+##################
+$scriptwrite = @'
+
+    $Path= 'test1.ps1'
+    $DestinationPath= 'C:\Gitpersonal\testcode'
+    $script:scriptpath = join-path $DestinationPath -childpath $Path
+    $script:DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
+
+
+taskkill /IM test1.exe /F
+start-sleep 3
+ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
+'@
+
+$scriptwrite | Set-Content ./convertertest.ps1 
+
+############
 
 (DownloadFilesFromRepo)
 start-sleep 5
