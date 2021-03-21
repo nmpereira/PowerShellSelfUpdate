@@ -1,6 +1,6 @@
 Write-host $PSScriptRoot
 
-$version= "31"
+$version= "32"
 
 Write-Output $version
 $DestinationPath = Get-Location
