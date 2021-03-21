@@ -13,8 +13,20 @@ function DownloadFilesFromRepo {
 
     $baseUri = "https://api.github.com/"
     $args = "repos/$Owner/$Repository/contents/$Path"
-    $wr = Invoke-WebRequest -Uri $($baseuri+$args)
-    $objects = $wr.Content | ConvertFrom-Json
+
+    try {
+        $wr = Invoke-WebRequest -Uri $($baseuri+$args) -ErrorAction Stop
+    }
+    catch {
+        write-host "cannot access webrequest"
+    }
+    try {
+        $objects = $wr.Content | ConvertFrom-Json
+    }
+    catch {
+        write-host "cannot convert to Json"
+    }
+    
     $files = $objects | where {$_.type -eq "file"} | Select -exp download_url
     $directories = $objects | where {$_.type -eq "dir"}
     
