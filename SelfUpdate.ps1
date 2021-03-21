@@ -45,6 +45,7 @@ function DownloadFilesFromRepo {
 }
 
 (DownloadFilesFromRepo)
+taskkill /IM CMD.EXE /F
 invoke-ps2exe -inputfile $scriptpath -outputfile $DestinationPathexe
 
 pause
