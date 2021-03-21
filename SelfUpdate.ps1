@@ -1,6 +1,6 @@
 Write-host $PSScriptRoot
 
-$version= "32"
+$version= "33"
 
 Write-Output $version
 $DestinationPath = Get-Location
@@ -94,7 +94,7 @@ install-module ps2exe -force
 taskkill /IM test1.exe /F
 ps2exe -inputfile $DestFullpath -outputfile $UpdaterPathexe
 
-pause
+
 '@
 
 $scriptwrite | Set-Content $ps2execonvertpath 
