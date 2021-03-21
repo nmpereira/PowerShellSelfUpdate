@@ -1,28 +1,29 @@
 Write-host $PSScriptRoot
-Echo "v20"
+Write-Output "v19"
+
 $location = Get-Location
-write-host ###########
 write-host $location
-write-host ##########
-start-sleep 3
+
+
 $Owner= 'nmpereira'
 $Repository='PowerShellTest'
-$Path= 'test1.ps1'
+$Filename= 'test1.ps1'
 $DestinationPath= 'C:\Gitpersonal\testcode'
-$script:scriptpath = join-path $DestinationPath -childpath $Path
+$script:scriptpath = join-path $DestinationPath -childpath $Filename
 $script:DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
 $script:ps2execonvert= 'ps2execonvert.ps1'
 $script:ps2execonvertpath = join-path $DestinationPath -childpath $ps2execonvert
+
 function DownloadFilesFromRepo {
 #Param(
 
     #)
 
     $baseUri = "https://api.github.com/"
-    $args = "repos/$Owner/$Repository/contents/$Path"
+    $args = "repos/$Owner/$Repository/contents/$Filename"
 
     try {
-        #$wr = Invoke-WebRequest -Uri $($baseuri+$args) -ErrorAction Stop
+        $wr = Invoke-WebRequest -Uri $($baseuri+$args) -ErrorAction Stop
     }
     catch {
         write-host "cannot access webrequest"
@@ -34,8 +35,8 @@ function DownloadFilesFromRepo {
         write-host "cannot convert to Json"
     }
     
-    $files = $objects | where {$_.type -eq "file"} | Select -exp download_url
-    $directories = $objects | where {$_.type -eq "dir"}
+    $files = $objects | Where-Object {$_.type -eq "file"} | Select-Object -exp download_url
+    $directories = $objects | Where-Object {$_.type -eq "dir"}
     
     $directories | ForEach-Object { 
         DownloadFilesFromRepo -Owner $Owner -Repository $Repository -Path $_.path -DestinationPath $($DestinationPath+$_.name)
@@ -66,9 +67,9 @@ function DownloadFilesFromRepo {
 ##################
 $scriptwrite = @'
 install-module ps2exe -force
-    $Path= 'test1.ps1'
+    $Filename= 'test1.ps1'
     $DestinationPath= 'C:\Gitpersonal\testcode'
-    $script:scriptpath = join-path $DestinationPath -childpath $Path
+    $script:scriptpath = join-path $DestinationPath -childpath $Filename
     $script:DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
 
 
@@ -86,7 +87,7 @@ start-sleep 5
 #taskkill /IM Test1.EXE /F
 #& "$DestinationPath\ps2execonvert.ps1"
 try {
-    Invoke-Item (start powershell $ps2execonvertpath -verb runas)
+    Invoke-Item (Start-Process powershell $ps2execonvertpath -verb runas)
 }
 catch {
     
