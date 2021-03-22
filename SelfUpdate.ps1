@@ -1,88 +1,86 @@
-Write-host $PSScriptRoot
+function UpdateSctipt {
 
-$version= "35"
+    $ScriptVersion = "35"
 
-Write-Output $version
-$DestinationPath = Get-Location
-write-host $DestinationPath
-
-
-$RepoOwner= 'nmpereira'
-$Repository='PowerShellTest'
-$Filename= 'test1.ps1'
-
-#$script:scriptpath = join-path $DestinationPath -childpath $Filename
-#$DestinationPathexe = join-path $DestinationPath -childpath 'test1.exe'
-$ps2execonvert= 'ps2execonvert.ps1'
-$Tempfolder ='C:\temp\test'
-$varfile = join-path -path $Tempfolder -childpath 'variable.txt'
-$DestinationPath | Set-Content $varfile
-$ps2execonvertpath = join-path $Tempfolder -childpath $ps2execonvert
+    Write-Output $ScriptVersion
+    $CurrentDirectory = Get-Location
+    write-host $CurrentDirectory
 
 
-$versionlog= $varfile = join-path -path $Tempfolder -childpath 'version.txt'
-$version | Set-Content $versionlog
-function DownloadFilesFromRepo {
-#Param(
+    $RepoOwner = 'nmpereira'
+    $Repository = 'PowerShellTest'
+    $ScriptUpdaterFileName = 'test1.ps1'
 
-    #)
 
-    $baseUri = "https://api.github.com/"
-    $args = "repos/$RepoOwner/$Repository/contents/$Filename"
+    $Ps2ExeConvert = 'ps2execonvert.ps1'
+    $Tempfolder = 'C:\temp\test'
+    $varfile = join-path -path $Tempfolder -childpath 'ScriptScriptVersion.txt'
+    $CurrentDirectory | Set-Content $varfile
+    $Ps2ExeConvertpath = join-path $Tempfolder -childpath $Ps2ExeConvert
 
-    try {
-        $wr = Invoke-WebRequest -Uri $($baseuri+$args) -ErrorAction Stop
-    }
-    catch {
-        write-host "cannot access webrequest"
-    }
-    try {
-        $objects = $wr.Content | ConvertFrom-Json -ErrorAction Stop
-    }
-    catch {
-        write-host "cannot convert to Json"
-    }
-    
-    $files = $objects | Where-Object {$_.type -eq "file"} | Select-Object -exp download_url
-    $directories = $objects | Where-Object {$_.type -eq "dir"}
-    
-    $directories | ForEach-Object { 
-        DownloadFilesFromRepo -Owner $RepoOwner -Repository $Repository -Path $_.path -DestinationPath $($Tempfolder+$_.name)
-    }
 
-    
-    if (-not (Test-Path $Tempfolder)) {
-        # Destination path does not exist, let's create it
+    $ScriptVersionlog = $varfile = join-path -path $Tempfolder -childpath 'ScriptVersion.txt'
+    $ScriptVersion | Set-Content $ScriptVersionlog
+    function DownloadFilesFromRepo {
+
+        $baseUri = "https://api.github.com/"
+        $UriArgs = "repos/$RepoOwner/$Repository/contents/$ScriptUpdaterFileName"
+
         try {
-            New-Item -Path $Tempfolder -ItemType Directory -ErrorAction Stop
-        } catch {
-            throw "Could not create path '$Tempfolder'!"
+            $wr = Invoke-WebRequest -Uri $($baseuri + $UriArgs) -ErrorAction Stop
         }
-    }
-
-    foreach ($file in $files) {
-        $fileDestination = Join-Path $Tempfolder (Split-Path $file -Leaf)
+        catch {
+            write-host "cannot access webrequest"
+        }
         try {
-            Invoke-WebRequest -Uri $file -OutFile $fileDestination -ErrorAction Stop -Verbose
-            "Grabbed '$($file)' to '$fileDestination'"
-        } catch {
-            throw "Unable to download '$($file.path)'"
+            $objects = $wr.Content | ConvertFrom-Json -ErrorAction Stop
         }
+        catch {
+            write-host "cannot convert to Json"
+        }
+    
+        $files = $objects | Where-Object { $_.type -eq "file" } | Select-Object -exp download_url
+        $directories = $objects | Where-Object { $_.type -eq "dir" }
+    
+        $directories | ForEach-Object { 
+            DownloadFilesFromRepo -Owner $RepoOwner -Repository $Repository -Path $_.path -DestinationPath $($Tempfolder + $_.name)
+        }
+
+    
+        if (-not (Test-Path $Tempfolder)) {
+            # Destination path does not exist, let's create it
+            try {
+                New-Item -Path $Tempfolder -ItemType Directory -ErrorAction Stop
+            }
+            catch {
+                throw "Could not create path '$Tempfolder'!"
+            }
+        }
+
+        foreach ($file in $files) {
+            $fileDestination = Join-Path $Tempfolder (Split-Path $file -Leaf)
+            try {
+                Invoke-WebRequest -Uri $file -OutFile $fileDestination -ErrorAction Stop -Verbose
+                "Grabbed '$($file)' to '$fileDestination'"
+            }
+            catch {
+                throw "Unable to download '$($file.path)'"
+            }
+        }
+
     }
 
-}
-
-##################
-$scriptwrite = @'
-install-module ps2exe -force
+    ##################
+    $scriptwrite = @'
+    install-module ps2exe -force
     $UpdaterPath = 'C:\temp\test'
     $varfile = join-path -path $UpdaterPath -childpath 'variable.txt'
-    $DestinationPath = get-content $varfile
-    $Filename= 'test1.ps1'
-    $DestFullpath = join-path $UpdaterPath -childpath $Filename
+    $CurrentDirectory = get-content $varfile
+    $ScriptUpdaterFileName= 'test1.ps1'
+    $DestFullpath = join-path $UpdaterPath -childpath $ScriptUpdaterFileName
     
-    #$script:scriptpath = join-path $UpdaterPath -childpath $Filename
-    $script:UpdaterPathexe = join-path $DestinationPath -childpath 'test1.exe'
+    #$script:scriptpath = join-path $UpdaterPath -childpath $ScriptUpdaterFileName
+    $script:UpdaterPathexe = join-path $CurrentDirectory -childpath 'test1.exe'
     write-host '###'
     write-host $varfile
     write-host '###'
@@ -90,29 +88,23 @@ install-module ps2exe -force
     write-host '###'
     write-host $UpdaterPathexe
     write-host '###'
-
-taskkill /IM test1.exe /F
-ps2exe -inputfile $DestFullpath -outputfile $UpdaterPathexe
-
-
+    taskkill /IM test1.exe /F
+    ps2exe -inputfile $DestFullpath -outputfile $UpdaterPathexe
 '@
+    ##################
+    $scriptwrite | Set-Content $Ps2ExeConvertpath 
+    ##################
 
-$scriptwrite | Set-Content $ps2execonvertpath 
+    (DownloadFilesFromRepo)
 
-############
-
-(DownloadFilesFromRepo)
-
-#taskkill /IM Test1.EXE /F
-#& "$UpdaterPath\ps2execonvert.ps1"
-try {
-    Invoke-Item (Start-Process powershell $ps2execonvertpath -verb runas)
-}
-catch {
+    try {
+        Invoke-Item (Start-Process powershell $Ps2ExeConvertpath -verb runas)
+    }
+    catch {
     
-} 
+    } 
 
 
-#invoke-ps2exe -inputfile $scriptpath -outputfile $UpdaterPathexe
-#Start-Process -FilePath "Test1.exe"
+}
 
+(UpdateSctipt)
