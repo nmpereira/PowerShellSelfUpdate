@@ -1,6 +1,6 @@
 function UpdateSctipt {
 
-    $ScriptVersion = "36"
+    $ScriptVersion = "37"
 
     Write-Output $ScriptVersion
     $CurrentDirectory = Get-Location
@@ -81,13 +81,6 @@ function UpdateSctipt {
     
     #$script:scriptpath = join-path $UpdaterPath -childpath $ScriptUpdaterFileName
     $script:UpdaterPathexe = join-path $CurrentDirectory -childpath 'test1.exe'
-    write-host '###'
-    write-host $varfile
-    write-host '###'
-    write-host $DestFullpath
-    write-host '###'
-    write-host $UpdaterPathexe
-    write-host '###'
     taskkill /IM test1.exe /F
     ps2exe -inputfile $DestFullpath -outputfile $UpdaterPathexe
 '@
