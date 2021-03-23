@@ -1,6 +1,6 @@
 function UpdateSctipt {
 
-    $ScriptVersion = "38"
+    $ScriptVersion = "39"
 
     Write-Output $ScriptVersion
     $CurrentDirectory = Get-Location
@@ -27,7 +27,7 @@ function UpdateSctipt {
         $UriArgs = "repos/$RepoOwner/$Repository/contents/$ScriptUpdaterFileName"
 
         try {
-            $wr = Invoke-WebRequest -Uri $($baseuri + $UriArgs) -ErrorAction Stop
+            $wr = Invoke-WebRequest -Uri $($baseuri + $UriArgs) -ErrorAction Stop -UseBasicParsing
         }
         catch {
             write-host "cannot access webrequest"
