@@ -1,6 +1,6 @@
 function UpdateSctipt {
 
-    $ScriptVersion = "37"
+    $ScriptVersion = "38"
 
     Write-Output $ScriptVersion
     $CurrentDirectory = Get-Location
@@ -9,11 +9,11 @@ function UpdateSctipt {
 
     $RepoOwner = 'nmpereira'
     $Repository = 'PowerShellTest'
-    $ScriptUpdaterFileName = 'test1.ps1'
+    $ScriptUpdaterFileName = 'SelfUpdate.ps1'
 
 
     $Ps2ExeConvert = 'ps2execonvert.ps1'
-    $Tempfolder = 'C:\temp\test'
+    $Tempfolder = 'C:\temp\UpdateScript'
     $varfile = join-path -path $Tempfolder -childpath 'ScriptScriptVersion.txt'
     $CurrentDirectory | Set-Content $varfile
     $Ps2ExeConvertpath = join-path $Tempfolder -childpath $Ps2ExeConvert
@@ -73,15 +73,15 @@ function UpdateSctipt {
     ##################
     $scriptwrite = @'
     install-module ps2exe -force
-    $UpdaterPath = 'C:\temp\test'
+    $UpdaterPath = 'C:\temp\UpdateScript'
     $varfile = join-path -path $UpdaterPath -childpath 'variable.txt'
     $CurrentDirectory = get-content $varfile
-    $ScriptUpdaterFileName= 'test1.ps1'
+    $ScriptUpdaterFileName= 'SelfUpdate.ps1'
     $DestFullpath = join-path $UpdaterPath -childpath $ScriptUpdaterFileName
     
     #$script:scriptpath = join-path $UpdaterPath -childpath $ScriptUpdaterFileName
-    $script:UpdaterPathexe = join-path $CurrentDirectory -childpath 'test1.exe'
-    taskkill /IM test1.exe /F
+    $script:UpdaterPathexe = join-path $CurrentDirectory -childpath 'SelfUpdate.exe'
+    taskkill /IM SelfUpdate.exe /F
     ps2exe -inputfile $DestFullpath -outputfile $UpdaterPathexe
 '@
     ##################
