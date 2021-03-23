@@ -74,7 +74,7 @@ function UpdateSctipt {
     $scriptwrite = @'
     install-module ps2exe -force
     $UpdaterPath = 'C:\temp\UpdateScript'
-    $varfile = join-path -path $UpdaterPath -childpath 'variable.txt'
+    $varfile = join-path -path $UpdaterPath -childpath 'ScriptScriptVersion.txt'
     $CurrentDirectory = get-content $varfile
     $ScriptUpdaterFileName= 'SelfUpdate.ps1'
     $DestFullpath = join-path $UpdaterPath -childpath $ScriptUpdaterFileName
