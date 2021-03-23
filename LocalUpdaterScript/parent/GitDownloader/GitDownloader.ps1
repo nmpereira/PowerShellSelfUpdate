@@ -8,4 +8,6 @@ $file= Split-Path $url -Leaf
 Write-Host $file
 $webClient.DownloadFile($url,$file)
 
+(Get-Item .\file1.exe).VersionInfo.FileVersion
+
 pause
