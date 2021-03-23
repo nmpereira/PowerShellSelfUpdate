@@ -1,6 +1,6 @@
 function UpdateSctipt {
 
-    $ScriptVersion = "40"
+    $ScriptVersion = "41"
 
     Write-Output $ScriptVersion
     $CurrentDirectory = Get-Location
