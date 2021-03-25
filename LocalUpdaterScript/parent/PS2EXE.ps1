@@ -1,1 +1,1 @@
-ps2exe -inputfile ./File1.ps1 -outputfile ./File1.exe -version '6'
+ps2exe -inputfile ./File1.ps1 -outputfile ./File1.exe -version '6.1'
